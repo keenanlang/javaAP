@@ -72,7 +72,6 @@ public class Display extends Container implements KeyListener, MouseListener, Mo
         mydrawarea.createBufferStrategy(1);
         
         mybs = mydrawarea.getBufferStrategy();
-        mypen = (Graphics2D) mybs.getDrawGraphics();
         
         this.width = wid;
         this.height = hei;
@@ -90,10 +89,12 @@ public class Display extends Container implements KeyListener, MouseListener, Mo
     }
     
     public void render()
-    {    
+    {
+	mypen = (Graphics2D) mybs.getDrawGraphics();
+	mypen.clearRect(0, 0, width, height);
         this.render(mypen);
+	mypen.dispose();
         
-        //mydrawarea.repaint();
         mybs.show();
         Toolkit.getDefaultToolkit().sync();
     }
