@@ -45,4 +45,23 @@ public class Transform extends Obj
         AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
         return op.filter(input, null);
     }
+    
+    /**
+     * Scales an image to a different size
+     *
+     * @param input The image to scale
+     * @param scalex Horizontal scale factor
+     * @param scaley Vertical scale factor
+     * 
+     */
+    public static BufferedImage scale(BufferedImage input, double scalex, double scaley)
+    {
+	BufferedImage output = new BufferedImage((int) (scalex * input.getWidth()), (int) (scaley * input.getHeight()), BufferedImage.TYPE_INT_ARGB);
+	
+	AffineTransform tx = AffineTransform.getScaleInstance(scalex, scaley);
+	AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+	op.filter(input, output);
+	
+	return output;
+    }
 }
