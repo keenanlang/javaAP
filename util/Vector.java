@@ -103,13 +103,13 @@ public class Vector extends Obj
      * 
      * @param offset_Vector The vector to be used for the offset
      *                      operation.
-     * @param scale The amount to scale the Vector.
+     * @param scale The amount to scale the input Vector.
      * 
-     * @return a new Vector equivalent to offset(offset_Vector).scale(scale)
+     * @return a new Vector equivalent to offset(offset_Vector.scale(scale))
      */
     public final Vector offset(Vector offset_Vector, double scale)
     {
-        return this.offset(offset_Vector).scale(scale);
+        return this.offset(offset_Vector.scale(scale));
     }
     
     /**
