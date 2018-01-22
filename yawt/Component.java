@@ -12,15 +12,13 @@ public abstract class Component extends Obj
     public int x,y,width,height;
     public String name;
     public boolean visible;
-    
-    private ArrayDeque<Object> listeners;
+
     private static int component_id = 0;
     
     protected Component()
     {
         component_id += 1;
         name = this.getClass().getSimpleName() + component_id;
-        listeners = new ArrayDeque<Object>();
         visible = true;
     }
     
@@ -35,28 +33,13 @@ public abstract class Component extends Obj
     public void position(Vector pos)        { x = (int) pos.x; y = (int) pos.y; }
     public Vector position()                { return Vector.instance(x,y); }
     
-    public void register(Object in)     { listeners.add(in); }
-    public void deregister(Object in)   { listeners.remove(in); }
+    public void register(Object in)     { this.enlist(Obj.wrap(in)); }
+    public void deregister(Object in)   { this.delist(Obj.wrap(in)); }
     
     public void raise(String event, Object... args)
     {
         this.call("this_" + event, args);
-        
-        Object[] newargs = new Object[args.length + 1];
-        
-        for(int i = 0; i < args.length; i += 1)
-        {
-            newargs[i] = args[i];
-        }
-        
-        newargs[newargs.length - 1] = this;
-        
-        for(Object listener : listeners)
-        {
-            Obj temp = Obj.wrap(listener);
-            
-            temp.call(this.name + "_" + event, newargs);
-        }
+        this.raise(this.name + "_" + event, args);
     }
     
     protected void clicked(Vector p, String button)          { this.raise("clicked", p, button); }
